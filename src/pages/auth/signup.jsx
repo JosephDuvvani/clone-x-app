@@ -1,43 +1,42 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import UserContext from "../../context/userContext";
 import { useNavigate } from "react-router-dom";
+import api from "../../config/api.config";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
+  const [error, setError] = useState();
 
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
 
+  useEffect(() => {
+    if (user) navigate("home", { replace: true });
+  }, [user?.id]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const apiURL = import.meta.env.VITE_CLONE_X_API_URL;
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    api
+      .post("/auth/signup", {
         firstname,
         lastname,
         username,
         password,
-      }),
-    };
-
-    fetch(`${apiURL}/auth/signup`, options)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.user) {
-          setUser(data.user);
-          navigate("/", { replace: true });
-        }
+      })
+      .then((res) => setUser(res.data.user))
+      .catch((error) => {
+        setError(
+          error.response.data.message
+            ? error.response.data
+            : error.response.data.errors[0]
+        );
       });
   };
+
   return (
     <>
       {!user && (
@@ -47,7 +46,7 @@ const Signup = () => {
             <input
               type="text"
               name="firstname"
-              value={username}
+              value={firstname}
               onChange={(e) => setFirstname(e.target.value)}
               required
             />
@@ -57,7 +56,7 @@ const Signup = () => {
             <input
               type="text"
               name="lastname"
-              value={username}
+              value={lastname}
               onChange={(e) => setLastname(e.target.value)}
             />
           </div>
@@ -82,6 +81,7 @@ const Signup = () => {
             />
           </div>
           <button>Log In</button>
+          {error && <div>{error.message || error.msg}</div>}
         </form>
       )}
     </>

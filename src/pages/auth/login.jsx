@@ -6,6 +6,7 @@ import api from "../../config/api.config";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState();
 
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
@@ -17,13 +18,22 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    api.post("/auth/login", { username, password }).then((res) => {
-      if (res.statusText == "OK") {
-        setUser(res.data.user);
-        navigate("/");
-      }
-    });
+    api
+      .post("/auth/login", { username, password })
+      .then((res) => {
+        if (res.statusText == "OK") {
+          setUser(res.data.user);
+        }
+      })
+      .catch((error) => {
+        setError(
+          error.response.data.message
+            ? error.response.data
+            : error.response.data.errors[0]
+        );
+      });
   };
+  console.log(error);
   return (
     <>
       {!user && (
@@ -49,6 +59,7 @@ const Login = () => {
             />
           </div>
           <button>Log In</button>
+          {error && <div>{error.message || error.msg}</div>}
         </form>
       )}
     </>
