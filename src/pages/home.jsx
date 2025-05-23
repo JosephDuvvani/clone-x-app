@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import UserContext from "../context/userContext";
 import { useNavigate } from "react-router-dom";
+import CreatePost from "../components/createPost";
 
 const Homepage = () => {
   const { user } = useContext(UserContext);
@@ -13,9 +14,10 @@ const Homepage = () => {
   return (
     <>
       {user && (
-        <>
-          <div>{user.profile.firstname}'s Homepage</div>
-        </>
+        <div>
+          <h3 aria-hidden>Following</h3>
+          <CreatePost />
+        </div>
       )}
     </>
   );
