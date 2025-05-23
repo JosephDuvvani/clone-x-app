@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { UserProvider } from "../context/userContext";
 import api from "../config/api.config";
-import AccountButton from "../components/accountButton";
+import "../assets/styles/layout.css";
+import MainContent from "../components/mainContent";
+import Header from "../components/header";
 
 const Layout = () => {
   const [user, setUser] = useState();
@@ -21,13 +23,11 @@ const Layout = () => {
       <UserProvider value={{ user, setUser }}>
         {!loading && (
           <>
-            {user && (
-              <header>
-                <AccountButton />
-              </header>
-            )}
-            <main>
-              <Outlet />
+            {user && <Header />}
+            <main className="main">
+              <MainContent>
+                <Outlet />
+              </MainContent>
             </main>
           </>
         )}
