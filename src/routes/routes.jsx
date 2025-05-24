@@ -3,6 +3,9 @@ import Layout from "../pages/layout";
 import Login from "../pages/auth/login";
 import Signup from "../pages/auth/signup";
 import Auth from "../pages/auth";
+import Profile from "../pages/profile";
+import UserPosts from "../pages/profile/posts";
+import UserLikes from "../pages/profile/likes";
 
 const routes = [
   {
@@ -26,6 +29,20 @@ const routes = [
       {
         path: "home",
         element: <Homepage />,
+      },
+      {
+        path: "/:username",
+        element: <Profile />,
+        children: [
+          {
+            index: true,
+            element: <UserPosts />,
+          },
+          {
+            path: "likes",
+            element: <UserLikes />,
+          },
+        ],
       },
     ],
   },

@@ -26,7 +26,10 @@ const Layout = () => {
             {user && <Header />}
             <main className="main">
               <MainContent>
-                <Outlet />
+                <div className="main__content">
+                  <Outlet />
+                  <div></div>
+                </div>
               </MainContent>
             </main>
           </>
