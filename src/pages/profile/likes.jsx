@@ -14,7 +14,7 @@ const UserLikes = () => {
     setLoadingPosts(true);
     api
       .get(`users/${username}/liked_posts`)
-      .then((res) => setLikes(res.data.posts))
+      .then((res) => setLikes(res.data.likes))
       .catch((error) => console.error(error.message))
       .finally(() => setLoadingPosts(false));
   }, [username]);
@@ -22,9 +22,9 @@ const UserLikes = () => {
     <div>
       {likes && likes.length > 0 && (
         <section>
-          {likes.map((post) => (
-            <article key={post.id}>
-              <Post post={post} />
+          {likes.map((like) => (
+            <article key={like.post.id}>
+              <Post post={like.post} />
             </article>
           ))}
         </section>
