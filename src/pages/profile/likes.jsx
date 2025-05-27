@@ -10,6 +10,8 @@ const UserLikes = () => {
 
   const { username } = useParams();
 
+  const posts = likes?.map((like) => like.post);
+
   useEffect(() => {
     setLoadingPosts(true);
     api
@@ -18,13 +20,27 @@ const UserLikes = () => {
       .catch((error) => console.error(error.message))
       .finally(() => setLoadingPosts(false));
   }, [username]);
+
+  const updatePost = (post) => {
+    setLikes((prev) =>
+      prev.map((like) =>
+        post.id === like.post.id
+          ? {
+              ...like,
+              post,
+            }
+          : like
+      )
+    );
+  };
+
   return (
     <div>
       {likes && likes.length > 0 && (
         <section>
           {likes.map((like) => (
             <article key={like.post.id}>
-              <Post post={like.post} />
+              <Post post={like.post} posts={posts} updatePost={updatePost} />
             </article>
           ))}
         </section>

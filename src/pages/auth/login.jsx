@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../context/userContext";
-import { replace, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import api from "../../config/api.config";
 
 const Login = () => {
@@ -33,7 +33,7 @@ const Login = () => {
         );
       });
   };
-  console.log(error);
+
   return (
     <>
       {!user && (

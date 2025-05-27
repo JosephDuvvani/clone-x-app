@@ -19,13 +19,17 @@ const UserPosts = () => {
       .finally(() => setLoadingPosts(false));
   }, [username]);
 
+  const updatePost = (post) => {
+    setPosts((prev) => prev.map((data) => (post.id === data.id ? post : data)));
+  };
+
   return (
     <>
       {posts && posts.length > 0 && (
         <section>
           {posts.map((post) => (
             <article key={post.id}>
-              <Post post={post} />
+              <Post post={post} updatePost={updatePost} />
             </article>
           ))}
         </section>

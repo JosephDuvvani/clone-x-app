@@ -19,7 +19,7 @@ import StarterKit from "@tiptap/starter-kit";
 
 const Profile = () => {
   const { user } = useContext(UserContext);
-  const { posts, userInfo, setUserInfo } = useContext(ProfileContext);
+  const { userInfo, setUserInfo } = useContext(ProfileContext);
   const [loadingInfo, setLoadingInfo] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [saveEdit, setSaveEdit] = useState(false);
@@ -32,9 +32,9 @@ const Profile = () => {
     else if (!userInfo || userInfo.username !== username) {
       setLoadingInfo(true);
       api
-        .get(`users/${username}?limit=10&offset=${posts?.length || 0}`)
+        .get(`users/${username}`)
         .then((res) => setUserInfo(res.data.userInfo))
-        .catch((error) => console.error(error.message))
+        .catch((error) => console.error(error.response.data.message))
         .finally(() => setLoadingInfo(false));
     }
   }, [user?.id, username]);
@@ -76,7 +76,7 @@ const Profile = () => {
           </div>
         </div>
       )}
-      {user && (
+      {user && userInfo && (
         <div style={{ maxWidth: "600px", borderInline: "1px solid lightgrey" }}>
           {loadingInfo && <div>Loading Info...</div>}
           <div>
@@ -98,82 +98,83 @@ const Profile = () => {
           </div>
 
           <div>
-            {userInfo && (
-              <>
-                <div>
-                  <div className="pos-rel">
-                    <div>
-                      <div
-                        style={{ width: "100%", paddingBottom: "33.333%" }}
-                      ></div>
-                    </div>
-                    <div className="banner">
-                      {userInfo?.profile.bannerUrl && (
-                        <img src={userInfo.profile.bannerUrl || ""} alt="" />
-                      )}
-                    </div>
-                  </div>
-
+            <>
+              <div>
+                <div className="pos-rel">
                   <div>
-                    <div className="picture">
-                      <img
-                        src={
-                          userInfo?.profile.pictureUrl ||
-                          import.meta.env.VITE_DEFAULT_PICTURE250
-                        }
-                        alt=""
-                      />
-                    </div>
-                    {userInfo.username === user.username && (
-                      <div>
-                        <button onClick={() => setShowEdit(true)}>
-                          Edit profile
-                        </button>
-                      </div>
+                    <div
+                      style={{ width: "100%", paddingBottom: "33.333%" }}
+                    ></div>
+                  </div>
+                  <div className="banner">
+                    {userInfo?.profile.bannerUrl && (
+                      <img src={userInfo.profile.bannerUrl || ""} alt="" />
                     )}
                   </div>
+                </div>
 
-                  <div>
-                    <div>
-                      {`${userInfo?.profile.firstname} ${
-                        userInfo?.profile.lastname || ""
-                      }`.trim()}
-                    </div>
-                    <div>@{userInfo?.username}</div>
+                <div>
+                  <div className="picture">
+                    <img
+                      src={
+                        userInfo?.profile.pictureUrl ||
+                        import.meta.env.VITE_DEFAULT_PICTURE250
+                      }
+                      alt=""
+                    />
                   </div>
-
-                  {userInfo.profile.bio && (
+                  {userInfo.username === user.username && (
                     <div>
-                      {parse(generateHTML(userInfo.profile.bio, [StarterKit]))}
+                      <button onClick={() => setShowEdit(true)}>
+                        Edit profile
+                      </button>
                     </div>
                   )}
-
-                  <div>
-                    <div>
-                      <Icon path={mdiCalendarMonthOutline} size={1} />
-                      <span>
-                        Joined {format(userInfo?.createdAt, "MMM yyyy")}
-                      </span>
-                    </div>
-                  </div>
                 </div>
 
                 <div>
                   <div>
-                    <Link>
-                      <span>{userInfo._count.following}</span> Following
-                    </Link>
-                    <Link>
-                      <span>{userInfo._count.followedBy}</span> Followers
-                    </Link>
+                    {`${userInfo?.profile.firstname} ${
+                      userInfo?.profile.lastname || ""
+                    }`.trim()}
+                  </div>
+                  <div>@{userInfo?.username}</div>
+                </div>
+
+                {userInfo.profile.bio && (
+                  <div>
+                    {parse(generateHTML(userInfo.profile.bio, [StarterKit]))}
+                  </div>
+                )}
+
+                <div>
+                  <div>
+                    <Icon path={mdiCalendarMonthOutline} size={1} />
+                    <span>
+                      Joined {format(userInfo?.createdAt, "MMM yyyy")}
+                    </span>
                   </div>
                 </div>
-              </>
-            )}
+              </div>
+
+              <div>
+                <div>
+                  <Link>
+                    <span>{userInfo._count.following}</span> Following
+                  </Link>
+                  <Link>
+                    <span>{userInfo._count.followedBy}</span> Followers
+                  </Link>
+                </div>
+              </div>
+            </>
+
             <div>
               <nav>
                 <Link to={`/${username}`}>Posts</Link>
-                <Link to={"likes"}>Likes</Link>
+                {userInfo?.username === user.username && (
+                  <Link to={"likes"}>Likes</Link>
+                )}
               </nav>
             </div>
 
