@@ -5,6 +5,7 @@ import api from "../config/api.config";
 import "../assets/styles/layout.css";
 import MainContent from "../components/mainContent";
 import Header from "../components/header";
+import ConnectBox from "../components/connectBox";
 
 const Layout = () => {
   const [user, setUser] = useState();
@@ -28,7 +29,13 @@ const Layout = () => {
               <MainContent>
                 <div className="main__content">
                   <Outlet />
-                  <div></div>
+                  {user && (
+                    <aside className="aside">
+                      <div>
+                        <ConnectBox />
+                      </div>
+                    </aside>
+                  )}
                 </div>
               </MainContent>
             </main>
