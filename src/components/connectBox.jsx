@@ -76,6 +76,9 @@ const ConnectBox = () => {
               ))}
             </div>
           )}
+          <div>
+            <Link to={"connect_people"}>Show more</Link>
+          </div>
         </>
       )}
     </div>

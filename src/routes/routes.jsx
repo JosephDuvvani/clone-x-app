@@ -6,6 +6,7 @@ import Auth from "../pages/auth";
 import Profile from "../pages/profile";
 import UserPosts from "../pages/profile/posts";
 import UserLikes from "../pages/profile/likes";
+import ConnectPeople from "../pages/connectPeople";
 
 const routes = [
   {
@@ -25,6 +26,10 @@ const routes = [
             element: <Signup />,
           },
         ],
+      },
+      {
+        path: "connect_people",
+        element: <ConnectPeople />,
       },
       {
         path: "home",

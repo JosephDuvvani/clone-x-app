@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { UserProvider } from "../context/userContext";
 import api from "../config/api.config";
 import "../assets/styles/layout.css";
@@ -10,6 +10,8 @@ import ConnectBox from "../components/connectBox";
 const Layout = () => {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
+
+  const location = useLocation();
 
   useEffect(() => {
     api
@@ -29,7 +31,7 @@ const Layout = () => {
               <MainContent>
                 <div className="main__content">
                   <Outlet />
-                  {user && (
+                  {user && !location.pathname.includes("connect_people") && (
                     <aside className="aside">
                       <div>
                         <ConnectBox />
