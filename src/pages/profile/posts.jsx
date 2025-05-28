@@ -3,9 +3,11 @@ import { useParams } from "react-router-dom";
 import Post from "../../components/post";
 import ProfileContext from "../../context/profileContext";
 import api from "../../config/api.config";
+import UserContext from "../../context/userContext";
 
 const UserPosts = () => {
-  const { posts, setPosts } = useContext(ProfileContext);
+  const { posts, setPosts, userInfo } = useContext(ProfileContext);
+  const { followingPosts, setFollowingPosts } = useContext(UserContext);
   const [loadingPosts, setLoadingPosts] = useState(false);
 
   const { username } = useParams();
@@ -21,6 +23,18 @@ const UserPosts = () => {
 
   const updatePost = (post) => {
     setPosts((prev) => prev.map((data) => (post.id === data.id ? post : data)));
+    if (
+      userInfo.connection?.following &&
+      followingPosts &&
+      followingPosts.length > 0
+    ) {
+      let targetPost = followingPosts.find(({ id }) => id === post.id);
+      targetPost
+        ? setFollowingPosts((prev) =>
+            prev.map((data) => (data.id === post.id ? post : data))
+          )
+        : null;
+    }
   };
 
   return (

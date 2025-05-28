@@ -3,9 +3,11 @@ import { useParams } from "react-router-dom";
 import Post from "../../components/post";
 import ProfileContext from "../../context/profileContext";
 import api from "../../config/api.config";
+import UserContext from "../../context/userContext";
 
 const UserLikes = () => {
   const { likes, setLikes } = useContext(ProfileContext);
+  const { followingPosts, setFollowingPosts } = useContext(UserContext);
   const [loadingPosts, setLoadingPosts] = useState(false);
 
   const { username } = useParams();
@@ -32,6 +34,14 @@ const UserLikes = () => {
           : like
       )
     );
+    if (followingPosts && followingPosts.length > 0) {
+      let targetPost = followingPosts.find(({ id }) => id === post.id);
+      targetPost
+        ? setFollowingPosts((prev) =>
+            prev.map((data) => (data.id === post.id ? post : data))
+          )
+        : null;
+    }
   };
 
   return (

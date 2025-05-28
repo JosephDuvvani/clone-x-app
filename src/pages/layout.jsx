@@ -10,6 +10,7 @@ import ConnectBox from "../components/connectBox";
 const Layout = () => {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
+  const [followingPosts, setFollowingPosts] = useState();
 
   const location = useLocation();
 
@@ -23,7 +24,9 @@ const Layout = () => {
 
   return (
     <div className="layout">
-      <UserProvider value={{ user, setUser }}>
+      <UserProvider
+        value={{ user, setUser, followingPosts, setFollowingPosts }}
+      >
         {!loading && (
           <>
             {user && <Header />}
