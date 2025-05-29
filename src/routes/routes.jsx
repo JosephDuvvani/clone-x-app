@@ -1,5 +1,4 @@
 import Homepage from "../pages/home";
-import Layout from "../pages/layout";
 import Login from "../pages/auth/login";
 import Signup from "../pages/auth/signup";
 import Auth from "../pages/auth";
@@ -7,50 +6,34 @@ import Profile from "../pages/profile";
 import UserPosts from "../pages/profile/posts";
 import UserLikes from "../pages/profile/likes";
 import ConnectPeople from "../pages/connectPeople";
+import { Route, Routes, useLocation } from "react-router-dom";
+import EditProfile from "../components/editProfile";
 
-const routes = [
-  {
-    path: "/",
-    element: <Layout />,
-    children: [
-      {
-        path: "/",
-        element: <Auth />,
-        children: [
-          {
-            path: "login",
-            element: <Login />,
-          },
-          {
-            path: "signup",
-            element: <Signup />,
-          },
-        ],
-      },
-      {
-        path: "connect_people",
-        element: <ConnectPeople />,
-      },
-      {
-        path: "home",
-        element: <Homepage />,
-      },
-      {
-        path: "/:username",
-        element: <Profile />,
-        children: [
-          {
-            index: true,
-            element: <UserPosts />,
-          },
-          {
-            path: "likes",
-            element: <UserLikes />,
-          },
-        ],
-      },
-    ],
-  },
-];
+const AppRoutes = () => {
+  const location = useLocation();
+  const state = location.state;
+  const backgroundLocation = state?.backgroundLocation;
 
-export default routes;
+  return (
+    <>
+      <Routes location={backgroundLocation || location}>
+        <Route path="/" element={<Auth />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Route>
+        <Route path="/home" element={<Homepage />} />
+        <Route path="/:username" element={<Profile />}>
+          <Route index element={<UserPosts />} />
+          <Route path="likes" element={<UserLikes />} />
+        </Route>
+        <Route path="/connect_people" element={<ConnectPeople />} />
+      </Routes>
+
+      {backgroundLocation && location.pathname === "/settings/profile" && (
+        <EditProfile />
+      )}
+    </>
+  );
+};
+
+export default AppRoutes;

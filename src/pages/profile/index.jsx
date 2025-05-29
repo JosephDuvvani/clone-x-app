@@ -1,31 +1,35 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import api from "../../config/api.config";
 import Icon from "@mdi/react";
-import {
-  mdiArrowLeft,
-  mdiCalendarMonthOutline,
-  mdiClose,
-  mdiLoading,
-} from "@mdi/js";
+import { mdiArrowLeft, mdiCalendarMonthOutline } from "@mdi/js";
 import ProfileContext from "../../context/profileContext";
 import UserContext from "../../context/userContext";
 import { format } from "date-fns";
 import parse from "html-react-parser";
 import { generateHTML } from "@tiptap/react";
 import "../../assets/styles/profile.css";
-import ProfileEditor from "../../components/profileEditor";
 import StarterKit from "@tiptap/starter-kit";
 
 const Profile = () => {
   const { user } = useContext(UserContext);
-  const { userInfo, setUserInfo } = useContext(ProfileContext);
+  const { userInfo: info, setUserInfo } = useContext(ProfileContext);
+  const { authUserInfo } = useContext(UserContext);
   const [loadingInfo, setLoadingInfo] = useState(false);
-  const [showEdit, setShowEdit] = useState(false);
-  const [saveEdit, setSaveEdit] = useState(false);
 
   const { username } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
+
+  let userInfo = info;
+
+  if (username === authUserInfo.username) userInfo = authUserInfo;
 
   useEffect(() => {
     if (!user) navigate("/", { replace: true });
@@ -39,43 +43,12 @@ const Profile = () => {
     }
   }, [user?.id, username]);
 
+  const openModal = () => {
+    navigate("/settings/profile", { state: { backgroundLocation: location } });
+  };
+
   return (
     <>
-      {showEdit && (
-        <div className="modal">
-          <div className="modal__content modal__content--edit-profile">
-            <div>
-              <div className="modal__header">
-                <button
-                  className="modal__close"
-                  aria-label="Close modal"
-                  onClick={() => setShowEdit(false)}
-                >
-                  <Icon path={mdiClose} size={1} />
-                </button>
-
-                <div className="modal__title">
-                  <h2>Edit profile</h2>
-                </div>
-
-                <button onClick={() => setSaveEdit(true)}>Save</button>
-              </div>
-              <ProfileEditor
-                showEdit={setShowEdit}
-                saveEdit={saveEdit}
-                savingEdit={setSaveEdit}
-              />
-            </div>
-            {saveEdit && (
-              <div className="modal">
-                <div className="loading-icon">
-                  <Icon path={mdiLoading} size={1.5} />
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
       {user && userInfo && (
         <div style={{ maxWidth: "600px", borderInline: "1px solid lightgrey" }}>
           {loadingInfo && <div>Loading Info...</div>}
@@ -125,9 +98,7 @@ const Profile = () => {
                   </div>
                   {userInfo.username === user.username && (
                     <div>
-                      <button onClick={() => setShowEdit(true)}>
-                        Edit profile
-                      </button>
+                      <button onClick={openModal}>Edit profile</button>
                     </div>
                   )}
                 </div>

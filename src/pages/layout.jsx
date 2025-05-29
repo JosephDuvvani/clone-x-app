@@ -1,31 +1,49 @@
 import { useEffect, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { UserProvider } from "../context/userContext";
 import api from "../config/api.config";
 import "../assets/styles/layout.css";
 import MainContent from "../components/mainContent";
 import Header from "../components/header";
 import ConnectBox from "../components/connectBox";
+import AppRoutes from "../routes/routes";
 
 const Layout = () => {
   const [user, setUser] = useState();
+  const [authUserInfo, setAuthUserInfo] = useState();
   const [loading, setLoading] = useState(true);
   const [followingPosts, setFollowingPosts] = useState();
 
   const location = useLocation();
+  const state = location.state;
+  const backgroundLocation = state?.backgroundLocation;
 
   useEffect(() => {
-    api
-      .get("/auth/me")
-      .then((res) => setUser(res.data.user))
-      .catch(() => setUser(null))
-      .finally(() => setLoading(false));
-  }, []);
+    if (!user) {
+      api
+        .get("/auth/me")
+        .then((res) => setUser(res.data.user))
+        .catch(() => setUser(null));
+    } else if (!authUserInfo) {
+      api
+        .get(`users/${user.username}`)
+        .then((res) => setAuthUserInfo(res.data.userInfo))
+        .catch((error) => error.response?.data.message || error)
+        .finally(() => setLoading(false));
+    }
+  }, [user?.id]);
 
   return (
     <div className="layout">
       <UserProvider
-        value={{ user, setUser, followingPosts, setFollowingPosts }}
+        value={{
+          user,
+          setUser,
+          authUserInfo,
+          setAuthUserInfo,
+          followingPosts,
+          setFollowingPosts,
+        }}
       >
         {!loading && (
           <>
@@ -33,14 +51,19 @@ const Layout = () => {
             <main className="main">
               <MainContent>
                 <div className="main__content">
-                  <Outlet />
-                  {user && !location.pathname.includes("connect_people") && (
-                    <aside className="aside">
-                      <div>
-                        <ConnectBox />
-                      </div>
-                    </aside>
-                  )}
+                  <AppRoutes />
+
+                  {user &&
+                    !(
+                      location.pathname === "/connect_people" ||
+                      backgroundLocation?.pathname === "/connect_people"
+                    ) && (
+                      <aside className="aside">
+                        <div>
+                          <ConnectBox />
+                        </div>
+                      </aside>
+                    )}
                 </div>
               </MainContent>
             </main>

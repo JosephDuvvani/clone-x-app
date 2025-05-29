@@ -48,7 +48,7 @@ const Post = ({ post, updatePost }) => {
         <div>
           <div>
             <Link to={`/${author.username}`} state={{ userInfo: author }}>
-              <div>
+              <div className="picture">
                 <img
                   src={
                     author.profile.pictureUrl ||

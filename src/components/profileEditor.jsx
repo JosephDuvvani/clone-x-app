@@ -1,13 +1,11 @@
 import { useContext, useRef, useState } from "react";
 import TextArea from "./textarea";
 import api from "../config/api.config";
-import { useParams } from "react-router-dom";
-import ProfileContext from "../context/profileContext";
+import UserContext from "../context/userContext";
 
-const ProfileEditor = ({ showEdit, saveEdit, savingEdit }) => {
-  const { username } = useParams();
-  const { userInfo, setUserInfo } = useContext(ProfileContext);
-  const profile = userInfo?.profile;
+const ProfileEditor = ({ saveEdit, savingEdit }) => {
+  const { authUserInfo, setAuthUserInfo } = useContext(UserContext);
+  const profile = authUserInfo?.profile;
 
   const [firstname, setFirstname] = useState(profile?.firstname || "");
   const [lastname, setLastname] = useState(profile?.lastname || "");
@@ -15,6 +13,8 @@ const ProfileEditor = ({ showEdit, saveEdit, savingEdit }) => {
 
   const pictureRef = useRef();
   const bannerRef = useRef();
+
+  const username = authUserInfo.username;
 
   const handleChange = ({ editor }) => {
     setBio(editor.getJSON());
@@ -36,10 +36,11 @@ const ProfileEditor = ({ showEdit, saveEdit, savingEdit }) => {
         },
         { headers: { "Content-Type": "multipart/form-data" } }
       )
-      .then((res) => setUserInfo({ ...userInfo, profile: res.data.profile }))
+      .then((res) =>
+        setAuthUserInfo({ ...authUserInfo, profile: res.data.profile })
+      )
       .catch((error) => console.log(error))
       .finally(() => {
-        showEdit(false);
         savingEdit(false);
       });
   }
