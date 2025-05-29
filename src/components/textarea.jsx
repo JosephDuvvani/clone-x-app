@@ -2,10 +2,13 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useEffect } from "react";
 import { isEmpty } from "../lib/textAreaUtils";
+import { useLocation } from "react-router-dom";
 
 const extensions = [StarterKit];
 
 const TextArea = ({ handleChange, content }) => {
+  const location = useLocation();
+
   const editor = useEditor({
     extensions,
     content,
@@ -15,6 +18,7 @@ const TextArea = ({ handleChange, content }) => {
         class: "textEditor",
       },
     },
+    autofocus: location.pathname === "/compose/post" ? true : false,
   });
 
   useEffect(() => {

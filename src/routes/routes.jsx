@@ -8,6 +8,7 @@ import UserLikes from "../pages/profile/likes";
 import ConnectPeople from "../pages/connectPeople";
 import { Route, Routes, useLocation } from "react-router-dom";
 import EditProfile from "../components/editProfile";
+import ComposePost from "../components/composePost";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -31,6 +32,9 @@ const AppRoutes = () => {
 
       {backgroundLocation && location.pathname === "/settings/profile" && (
         <EditProfile />
+      )}
+      {backgroundLocation && location.pathname === "/compose/post" && (
+        <ComposePost />
       )}
     </>
   );

@@ -1,12 +1,19 @@
 import { mdiAccountOutline, mdiHomeVariant } from "@mdi/js";
 import Icon from "@mdi/react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AccountButton from "./accountButton";
 import { useContext } from "react";
 import UserContext from "../context/userContext";
 
 const Header = () => {
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const openModal = () => {
+    navigate("/compose/post", { state: { backgroundLocation: location } });
+  };
+
   return (
     <header className="header">
       <div>
@@ -24,6 +31,9 @@ const Header = () => {
               <span>Profile</span>
             </Link>
           </nav>
+          <div>
+            <button onClick={openModal}>Post</button>
+          </div>
         </div>
         <AccountButton />
       </div>
