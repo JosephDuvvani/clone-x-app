@@ -49,9 +49,9 @@ const UserLikes = () => {
       {likes && likes.length > 0 && (
         <section>
           {likes.map((like) => (
-            <article key={like.post.id}>
+            <div key={like.post.id}>
               <Post post={like.post} posts={posts} updatePost={updatePost} />
-            </article>
+            </div>
           ))}
         </section>
       )}

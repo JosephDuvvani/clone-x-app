@@ -23,7 +23,10 @@ const Layout = () => {
       api
         .get("/auth/me")
         .then((res) => setUser(res.data.user))
-        .catch(() => setUser(null));
+        .catch(() => {
+          setUser(null);
+          setLoading(false);
+        });
     } else if (!authUserInfo) {
       api
         .get(`users/${user.username}`)
@@ -32,7 +35,6 @@ const Layout = () => {
         .finally(() => setLoading(false));
     }
   }, [user?.id]);
-
   return (
     <div className="layout">
       <UserProvider
@@ -69,7 +71,7 @@ const Layout = () => {
             </main>
           </>
         )}
-        {loading && <div>Loading...</div>}
+        {loading && <div>Loading...k</div>}
       </UserProvider>
     </div>
   );

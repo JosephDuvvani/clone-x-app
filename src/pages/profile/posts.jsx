@@ -42,9 +42,9 @@ const UserPosts = () => {
       {posts && posts.length > 0 && (
         <section>
           {posts.map((post) => (
-            <article key={post.id}>
+            <div key={post.id}>
               <Post post={post} updatePost={updatePost} />
-            </article>
+            </div>
           ))}
         </section>
       )}

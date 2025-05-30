@@ -50,7 +50,7 @@ const ConnectPeople = () => {
         {connects && connects.length > 0 && (
           <div>
             {connects.map((user) => (
-              <button key={user.id}>
+              <div key={user.id}>
                 <div>
                   <Link to={`/${user.username}`}>
                     <div className="picture">
@@ -94,7 +94,7 @@ const ConnectPeople = () => {
                     )}
                   </div>
                 </div>
-              </button>
+              </div>
             ))}
           </div>
         )}

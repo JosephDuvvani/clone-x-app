@@ -13,6 +13,7 @@ const CreatePost = () => {
   const location = useLocation();
   const state = location.state;
   const backgroundLocation = state?.backgroundLocation;
+  const post = state?.post;
 
   const handleChange = ({ editor }) => {
     setBody(editor.getJSON());
@@ -20,12 +21,20 @@ const CreatePost = () => {
 
   const handlePost = () => {
     if (isEmpty(body)) return;
+    const url = post ? `posts/${post.id}` : "posts";
     api
-      .post("posts", { body })
+      .post(url, { body })
       .then((res) => {
         setFollowingPosts((prev) => [
-          { ...res.data.post, author: user, _count: { comments: 0, likes: 0 } },
-          ...prev,
+          { ...res.data.post, author: user, _count: { replies: 0, likes: 0 } },
+          ...prev.map((data) =>
+            data.id === post.id
+              ? {
+                  ...data,
+                  _count: { ...data._count, replies: data._count.replies + 1 },
+                }
+              : data
+          ),
         ]);
       })
       .catch((error) => console.log(error))
@@ -48,7 +57,7 @@ const CreatePost = () => {
         <TextArea handleChange={handleChange} content={body} />
       </div>
       <button onClick={handlePost} disabled={isEmpty(body)}>
-        Post
+        {post ? "Reply" : "Post"}
       </button>
     </div>
   );
