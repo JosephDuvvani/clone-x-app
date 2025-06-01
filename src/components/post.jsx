@@ -2,63 +2,32 @@ import { format } from "date-fns";
 import parse from "html-react-parser";
 import { generateHTML } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Icon from "@mdi/react";
-import { mdiCommentOutline, mdiHeartOutline, mdiLoading } from "@mdi/js";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import api from "../config/api.config";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import PostActions from "./postActions";
 
 const Post = ({ post, updatePost }) => {
   const { author } = post;
-  const [loadingLike, setLoadingLike] = useState(false);
 
-  const location = useLocation();
   const navigate = useNavigate();
 
-  const handleLike = () => {
-    setLoadingLike(true);
-    api
-      .put(`posts/${post.id}/like`)
-      .then((res) => {
-        updatePost({
-          ...post,
-          liked: true,
-          _count: { ...post._count, likes: post._count.likes + 1 },
-        });
-      })
-      .catch((error) => console.error(error.response?.data.message || error))
-      .finally(() => setLoadingLike(false));
-  };
-
-  const handleUnlike = () => {
-    setLoadingLike(true);
-    api
-      .put(`posts/${post.id}/unlike`)
-      .then((res) => {
-        updatePost({
-          ...post,
-          liked: false,
-          _count: { ...post._count, likes: post._count.likes - 1 },
-        });
-      })
-      .catch((error) => console.error(error.response?.data.message || error))
-      .finally(() => setLoadingLike(false));
-  };
-
-  const openModal = () => {
-    navigate("/compose/post", {
-      state: { backgroundLocation: location, post },
+  const openPost = () => {
+    navigate(`/post/${post.id}`, {
+      state: { post },
     });
   };
 
   return (
     <>
       {post && (
-        <article>
+        <article onClick={openPost}>
           <div className="flex">
             <div>
-              <Link to={`/${author.username}`} state={{ userInfo: author }}>
-                <div className="flex">
+              <Link
+                to={`/${author.username}`}
+                onClick={(e) => e.stopPropagation()}
+                state={{ userInfo: author }}
+              >
+                <div className="flex picture picture--small">
                   <img
                     src={
                       author.profile.pictureUrl ||
@@ -71,14 +40,22 @@ const Post = ({ post, updatePost }) => {
             </div>
             <div>
               <div>
-                <Link to={`/${author.username}`} state={{ userInfo: author }}>
+                <Link
+                  to={`/${author.username}`}
+                  onClick={(e) => e.stopPropagation()}
+                  state={{ userInfo: author }}
+                >
                   <span>
                     {`${author.profile.firstname} ${
                       author.profile.lastname || ""
                     }`.trim()}
                   </span>
                 </Link>
-                <Link to={`/${author.username}`} state={{ userInfo: author }}>
+                <Link
+                  to={`/${author.username}`}
+                  onClick={(e) => e.stopPropagation()}
+                  state={{ userInfo: author }}
+                >
                   <span> @{author.username}</span>
                 </Link>
 
@@ -88,38 +65,8 @@ const Post = ({ post, updatePost }) => {
                 <div>Replying to @{post.replyTo.author.username}</div>
               )}
               <div>{parse(generateHTML(post.body, [StarterKit]))}</div>
-              <div className="flex">
-                <div>
-                  <button
-                    aria-label={`${post._count.replies} replies. Reply`}
-                    onClick={openModal}
-                  >
-                    <div>
-                      <Icon path={mdiCommentOutline} size={1} />
-                    </div>
-                    <span>{post._count.replies}</span>
-                  </button>
-                </div>
-                <div>
-                  <button
-                    aria-label={`${post._count.likes} likes. Like`}
-                    onClick={post.liked ? handleUnlike : handleLike}
-                    style={{
-                      color: post.liked ? "lightgreen" : "inherit",
-                    }}
-                  >
-                    <div>
-                      <div className={loadingLike ? "loading" : null}>
-                        <Icon
-                          path={loadingLike ? mdiLoading : mdiHeartOutline}
-                          size={1}
-                        />
-                      </div>
-
-                      <span>{post._count.likes}</span>
-                    </div>
-                  </button>
-                </div>
+              <div>
+                <PostActions post={post} updatePost={updatePost} />
               </div>
             </div>
           </div>

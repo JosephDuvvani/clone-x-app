@@ -9,6 +9,7 @@ import ConnectPeople from "../pages/connectPeople";
 import { Route, Routes, useLocation } from "react-router-dom";
 import EditProfile from "../components/editProfile";
 import ComposePost from "../components/composePost";
+import FullPost from "../pages/fullPost";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -28,6 +29,7 @@ const AppRoutes = () => {
           <Route path="likes" element={<UserLikes />} />
         </Route>
         <Route path="/connect_people" element={<ConnectPeople />} />
+        <Route path="/post/:postId" element={<FullPost />} />
       </Routes>
 
       {backgroundLocation && location.pathname === "/settings/profile" && (
