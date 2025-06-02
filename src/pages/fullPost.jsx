@@ -6,35 +6,26 @@ import { mdiArrowLeft } from "@mdi/js";
 import Icon from "@mdi/react";
 import Post from "../components/post";
 import ActivePost from "../components/activePost";
+import { usePost } from "../context/postContext";
 
 const FullPost = () => {
   const { user, followingPosts, setFollowingPosts } = useContext(UserContext);
+  const { postChain, setPostChain, replies, setReplies } = usePost();
 
   const { postId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   let postData = location.state?.post;
 
-  const [postChain, setPostChain] = useState([postData]);
-  const [replies, setReplies] = useState();
   const [loadingChain, setLoadingChain] = useState(false);
   const [loadingReplies, setLoadingReplies] = useState(false);
-  const post = postChain?.[postChain.length - 1];
+  const post = postChain?.[postChain?.length - 1];
   const author = post?.author;
 
   useEffect(() => {
     if (!user) navigate("/", { replace: true });
     else {
-      if (post?.id !== postData?.id) {
-        if (
-          postChain.length >= 2 &&
-          postData.id === postChain[postChain.length - 2].id
-        )
-          postChain.splice(postChain.length - 2, 2);
-        setPostChain([...postChain, postData]);
-      }
-
-      if (postChain.length === 1 && post.replyToId) {
+      if (postData.replyToId) {
         setLoadingChain(true);
         api
           .get(`posts/${postId}/reply_chain`)
@@ -43,7 +34,7 @@ const FullPost = () => {
             console.error(error.response?.data.message || error)
           )
           .finally(() => setLoadingChain(false));
-      }
+      } else setPostChain([postData]);
 
       setLoadingReplies(true);
       api
@@ -73,7 +64,6 @@ const FullPost = () => {
     );
 
     if (
-      !updatedPost.replyToId &&
       author.connection?.following &&
       followingPosts &&
       followingPosts.length > 0

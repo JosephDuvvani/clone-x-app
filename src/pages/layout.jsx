@@ -7,11 +7,13 @@ import MainContent from "../components/mainContent";
 import Header from "../components/header";
 import ConnectBox from "../components/connectBox";
 import AppRoutes from "../routes/routes";
+import { PostProvider } from "../context/postContext";
 
 const Layout = () => {
   const [user, setUser] = useState();
   const [authUserInfo, setAuthUserInfo] = useState();
   const [loading, setLoading] = useState(true);
+  const [loadingPosts, setLoadingPosts] = useState(true);
   const [followingPosts, setFollowingPosts] = useState();
 
   const location = useLocation();
@@ -33,6 +35,11 @@ const Layout = () => {
         .then((res) => setAuthUserInfo(res.data.userInfo))
         .catch((error) => error.response?.data.message || error)
         .finally(() => setLoading(false));
+      api
+        .get(`users/${user.username}/following_posts?limit=30`)
+        .then((res) => setFollowingPosts(res.data.posts))
+        .catch((error) => console.error(error.response?.data.message || error))
+        .finally(() => setLoadingPosts(false));
     }
   }, [user?.id]);
   return (
@@ -45,6 +52,7 @@ const Layout = () => {
           setAuthUserInfo,
           followingPosts,
           setFollowingPosts,
+          loadingPosts,
         }}
       >
         {!loading && (
@@ -53,7 +61,9 @@ const Layout = () => {
             <main className="main">
               <MainContent>
                 <div className="main__content">
-                  <AppRoutes />
+                  <PostProvider>
+                    <AppRoutes />
+                  </PostProvider>
 
                   {user &&
                     !(
@@ -71,7 +81,7 @@ const Layout = () => {
             </main>
           </>
         )}
-        {loading && <div>Loading...k</div>}
+        {loading && <div>Loading...</div>}
       </UserProvider>
     </div>
   );
