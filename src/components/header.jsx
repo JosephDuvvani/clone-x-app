@@ -4,11 +4,12 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import AccountButton from "./accountButton";
 import { useContext, useState } from "react";
 import UserContext from "../context/userContext";
+import api from "../config/api.config";
 
 const Header = () => {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
 
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
 
