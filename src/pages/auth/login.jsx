@@ -111,7 +111,7 @@ const Login = () => {
                   <div>
                     <form onSubmit={handleSubmit} className="auth-form">
                       <div>
-                        <label className="input-wrapper input-wrapper--auth">
+                        <div className="input-wrapper input-wrapper--auth">
                           <div className="placeholder">
                             <span>Username</span>
                           </div>
@@ -123,10 +123,10 @@ const Login = () => {
                             onChange={(e) => setUsername(e.target.value)}
                             required
                           />
-                        </label>
+                        </div>
                       </div>
                       <div>
-                        <label className="input-wrapper input-wrapper--auth">
+                        <div className="input-wrapper input-wrapper--auth">
                           <div className="placeholder">
                             <span>Password</span>
                           </div>
@@ -138,7 +138,7 @@ const Login = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             required
                           />
-                        </label>
+                        </div>
                       </div>
                       <button
                         className="btn auth-btn auth-btn--white"
