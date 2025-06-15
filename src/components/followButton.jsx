@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import api from "../config/api.config";
+import UserContext from "../context/userContext";
 
 const FollowButton = ({ user, setConnects, setUserInfo }) => {
   const [loading, setLoading] = useState(false);
+  const { authUserInfo } = useContext(UserContext);
+
+  if (user.username === authUserInfo.username) return null;
 
   const handleFollow = (e) => {
     e.stopPropagation();

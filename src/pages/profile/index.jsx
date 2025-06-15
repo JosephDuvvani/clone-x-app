@@ -153,15 +153,23 @@ const Profile = () => {
                 <div>
                   <div className="flex">
                     <div style={{ marginRight: "20px", fontWeight: "400" }}>
-                      <Link className="dim-text">
+                      <Link
+                        to={`following`}
+                        state={{ userInfo }}
+                        className="hov-undrln"
+                      >
                         <span>{userInfo._count.following}</span>
-                        <span> Following</span>
+                        <span className="dim-text"> Following</span>
                       </Link>
                     </div>
                     <div>
-                      <Link className="dim-text">
+                      <Link
+                        to={`followers`}
+                        state={{ userInfo }}
+                        className="hov-undrln"
+                      >
                         <span>{userInfo._count.followedBy}</span>
-                        <span> Followers</span>
+                        <span className="dim-text"> Followers</span>
                       </Link>
                     </div>
                   </div>

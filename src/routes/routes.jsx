@@ -10,6 +10,8 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import EditProfile from "../components/editProfile";
 import ComposePost from "../components/composePost";
 import FullPost from "../pages/fullPost";
+import Following from "../pages/following";
+import Followers from "../pages/followers";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -27,6 +29,8 @@ const AppRoutes = () => {
           <Route path="likes" element={<UserLikes />} />
         </Route>
         <Route path="/connect_people" element={<ConnectPeople />} />
+        <Route path="/:username/following" element={<Following />} />
+        <Route path="/:username/followers" element={<Followers />} />
         <Route path="/post/:postId" element={<FullPost />} />
       </Routes>
 

@@ -152,6 +152,10 @@ body {
   margin: 0;
 }
 
+.hov-undrln:hover {
+  text-decoration: underline;
+}
+
 /* Blocks */
 .textEditor {
   flex: 1;
@@ -253,7 +257,14 @@ body {
   outline: none;
 }
 
-.posts-empty {
+.loading {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.posts-empty,
+.content-empty {
   display: flex;
   justify-content: center;
   padding-block: 2rem;
@@ -337,6 +348,11 @@ body {
   border: 2px solid rgb(129, 197, 243);
 }
 
+.loading__spinner {
+  display: flex;
+  animation: spin 700ms linear infinite;
+}
+
 /* Modifiers */
 .auth-btn--hollow {
   background-color: transparent;
@@ -374,4 +390,14 @@ body {
 .btn--connect {
   font-size: 14px;
   line-height: 1;
+}
+
+/* keyframes */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
