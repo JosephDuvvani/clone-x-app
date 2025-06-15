@@ -9,7 +9,7 @@ import api from "../config/api.config";
 const Header = () => {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
 
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, setAuthUserInfo } = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -21,7 +21,9 @@ const Header = () => {
     e.preventDefault();
     api
       .get("/auth/logout")
-      .then((res) => setUser(null))
+      .then((res) => {
+        setUser(null), setAuthUserInfo(null);
+      })
       .catch((error) => console.error(error.message));
   };
 

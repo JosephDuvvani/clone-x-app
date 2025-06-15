@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import UserContext from "../../context/userContext";
 import SignUpWithGithub from "./components/signupGithub";
+import LoginGuest from "./components/loginGuest";
 
 const Auth = () => {
   const location = useLocation();
@@ -93,6 +94,22 @@ const Auth = () => {
                   >
                     Sign in
                   </button>
+                </div>
+                <div>
+                  <div className="flex algn-c">
+                    <div className="flex-1">
+                      <div className="line-1"></div>
+                    </div>
+                    <div style={{ padding: "12px" }}>
+                      <span>OR</span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="line-1"></div>
+                    </div>
+                  </div>
+                </div>
+                <div style={{ marginTop: "12px" }}>
+                  <LoginGuest />
                 </div>
               </div>
             </div>

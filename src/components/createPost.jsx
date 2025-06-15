@@ -6,12 +6,15 @@ import UserContext from "../context/userContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { usePost } from "../context/postContext";
 import ProfileContext from "../context/profileContext";
+import Icon from "@mdi/react";
+import { mdiLoading } from "@mdi/js";
 
 const CreatePost = () => {
   const [body, setBody] = useState("");
   const { user, setFollowingPosts } = useContext(UserContext);
   const { setPosts, setLikes } = useContext(ProfileContext);
   const { postChain, setPostChain, setReplies } = usePost();
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,6 +29,7 @@ const CreatePost = () => {
   const handlePost = () => {
     if (isEmpty(body)) return;
     const url = post ? `posts/${post.id}` : "posts";
+    setLoading(true);
     api
       .post(url, { body })
       .then((res) => {
@@ -118,6 +122,7 @@ const CreatePost = () => {
 
       .catch((error) => console.log(error))
       .finally(() => {
+        setLoading(false);
         if (backgroundLocation) navigate(-1);
       });
   };
@@ -151,7 +156,16 @@ const CreatePost = () => {
           onClick={handlePost}
           disabled={isEmpty(body)}
         >
-          {post ? "Reply" : "Post"}
+          {loading && (
+            <div className="loading">
+              <div className="loading__spinner">
+                <Icon path={mdiLoading} className="loading__icon" />
+              </div>
+            </div>
+          )}{" "}
+          <div className={loading ? "btn-content-loading" : null}>
+            {post ? "Reply" : "Post"}
+          </div>
         </button>
       </div>
     </div>

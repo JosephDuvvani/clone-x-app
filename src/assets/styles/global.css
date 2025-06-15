@@ -20,6 +20,8 @@
   --hov-bg-light: hsl(210, 25%, 95%);
 
   --clr-blue: rgb(29, 155, 240);
+  --clr-green: rgb(94, 240, 138);
+  --clr-green-darker: rgb(29, 240, 92);
   --clr-gray-dark: rgb(47, 51, 54);
   --clr-gray-light: rgb(239, 243, 244);
 
@@ -154,6 +156,19 @@ body {
 
 .hov-undrln:hover {
   text-decoration: underline;
+}
+
+.btn-content-loading {
+  height: 0;
+  overflow: hidden;
+}
+
+.ellipsis {
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Blocks */
@@ -354,6 +369,11 @@ body {
   animation: spin 700ms linear infinite;
 }
 
+.loading__icon {
+  width: 20px;
+  height: 20px;
+}
+
 /* Modifiers */
 .auth-btn--hollow {
   background-color: transparent;
@@ -374,6 +394,22 @@ body {
 .auth-btn--white:focus-visible {
   background-color: var(--hov-bg-light);
   border-color: transparent;
+}
+
+.auth-btn--green {
+  background-color: var(--clr-green);
+  color: rgb(24, 26, 24);
+}
+
+.auth-btn--green:hover,
+.auth-btn--green:focus-visible {
+  background-color: var(--clr-green-darker);
+  border-color: transparent;
+}
+
+.loading__icon--small {
+  width: 14px;
+  height: 14px;
 }
 
 .input-wrapper--auth {

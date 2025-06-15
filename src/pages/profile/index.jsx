@@ -31,7 +31,7 @@ const Profile = () => {
 
   let userInfo = info;
 
-  if (username === authUserInfo.username) userInfo = authUserInfo;
+  if (username === authUserInfo?.username) userInfo = authUserInfo;
 
   useEffect(() => {
     if (!user) navigate("/", { replace: true });

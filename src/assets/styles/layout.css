@@ -288,6 +288,7 @@
 
 .account-menu__names {
   flex: 1;
+  max-width: 154.61px;
   padding-inline: 12px 16px;
   font-size: 15px;
   font-weight: 700;

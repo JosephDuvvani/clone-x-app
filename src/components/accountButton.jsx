@@ -1,20 +1,11 @@
-import { Link } from "react-router-dom";
-import api from "../config/api.config";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import UserContext from "../context/userContext";
 import Icon from "@mdi/react";
 import { mdiDotsHorizontal } from "@mdi/js";
 
 const AccountButton = ({ setShow }) => {
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
-  const handleLogOut = (e) => {
-    e.preventDefault();
-    api
-      .get("/auth/logout")
-      .then((res) => setUser(null))
-      .catch((error) => console.error(error.message));
-  };
   return (
     <>
       <div>
@@ -31,14 +22,14 @@ const AccountButton = ({ setShow }) => {
             </div>
             <div className="account-menu__names">
               <div className="flex">
-                <span>
+                <span className="ellipsis">
                   {`${user.profile.firstname} ${
                     user.profile.lastname || ""
                   }`.trim()}
                 </span>
               </div>
               <div className="flex account-menu__username">
-                <span>@{user.username}</span>
+                <span className="ellipsis">@{user.username}</span>
               </div>
             </div>
             <div>

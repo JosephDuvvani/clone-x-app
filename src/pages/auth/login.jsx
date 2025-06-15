@@ -3,12 +3,13 @@ import UserContext from "../../context/userContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import api from "../../config/api.config";
 import Icon from "@mdi/react";
-import { mdiClose } from "@mdi/js";
+import { mdiClose, mdiLoading } from "@mdi/js";
 import LoginWithGithub from "./components/loginGithub";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState();
   const [error, setError] = useState();
 
   const location = useLocation();
@@ -23,7 +24,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    setLoading(true);
     api
       .post("/auth/login", { username, password })
       .then((res) => {
@@ -37,7 +38,8 @@ const Login = () => {
             ? error.response.data
             : error.response.data.errors[0]
         );
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   const openSignUpModal = (e) => {
@@ -144,7 +146,15 @@ const Login = () => {
                         className="btn auth-btn auth-btn--white"
                         style={{ marginBlock: "16px" }}
                       >
-                        Sign in
+                        {loading ? (
+                          <div className="loading">
+                            <div className="loading__spinner">
+                              <Icon path={mdiLoading} size={0.85} />
+                            </div>
+                          </div>
+                        ) : (
+                          "Sign in"
+                        )}
                       </button>
                       {error && (
                         <div className="auth__error">

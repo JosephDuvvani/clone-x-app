@@ -1,12 +1,14 @@
 import { useContext, useState } from "react";
 import api from "../config/api.config";
 import UserContext from "../context/userContext";
+import { mdiLoading } from "@mdi/js";
+import Icon from "@mdi/react";
 
 const FollowButton = ({ user, setConnects, setUserInfo }) => {
   const [loading, setLoading] = useState(false);
   const { authUserInfo } = useContext(UserContext);
 
-  if (user.username === authUserInfo.username) return null;
+  if (user.username === authUserInfo?.username) return null;
 
   const handleFollow = (e) => {
     e.stopPropagation();
@@ -91,11 +93,20 @@ const FollowButton = ({ user, setConnects, setUserInfo }) => {
       disabled={loading}
       title={!loading && user.connection.following ? "Unfollow" : null}
     >
-      {!loading && user.connection.followedBy
-        ? "Follow back"
-        : user.connection.following
-        ? "Following"
-        : "Follow"}
+      {loading && (
+        <div className="loading">
+          <div className="loading__spinner">
+            <Icon path={mdiLoading} className="loading__icon--small" />
+          </div>
+        </div>
+      )}{" "}
+      <div className={loading ? "btn-content-loading" : null}>
+        {user.connection.followedBy
+          ? "Follow back"
+          : user.connection.following
+          ? "Following"
+          : "Follow"}
+      </div>
     </button>
   );
 };

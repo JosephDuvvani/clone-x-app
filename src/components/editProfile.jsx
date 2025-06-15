@@ -30,18 +30,18 @@ const EditProfile = () => {
             style={{ fontWeight: "400", fontSize: "15px", padding: "6px 16px" }}
             onClick={() => setSaveEdit(true)}
           >
-            Save
+            {saveEdit && (
+              <div className="loading">
+                <div className="loading__spinner">
+                  <Icon path={mdiLoading} className="loading__icon" />
+                </div>
+              </div>
+            )}{" "}
+            <div className={saveEdit ? "btn-content-loading" : null}>Save</div>
           </button>
         </div>
         <ProfileEditor saveEdit={saveEdit} savingEdit={setSaveEdit} />
       </div>
-      {saveEdit && (
-        <div className="modal">
-          <div className="loading-icon">
-            <Icon path={mdiLoading} size={1.5} />
-          </div>
-        </div>
-      )}
     </Modal>
   );
 };

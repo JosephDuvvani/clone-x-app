@@ -78,8 +78,13 @@ const PostActions = ({ post, updatePost }) => {
           className="post-actions__btn dim-text like-btn"
         >
           <div className="flex">
-            <div className={loadingLike ? "loading flex" : "flex"}>
-              <Icon path={loadingLike ? mdiLoading : mdiHeartOutline} />
+            <div className={loadingLike ? "loading" : "flex"}>
+              <div className={loadingLike ? "loading__spinner" : "flex"}>
+                <Icon
+                  path={loadingLike ? mdiLoading : mdiHeartOutline}
+                  className={loadingLike ? "loading__icon" : null}
+                />
+              </div>
             </div>
 
             <div className="post-action__value">
