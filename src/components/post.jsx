@@ -2,13 +2,14 @@ import { format } from "date-fns";
 import parse from "html-react-parser";
 import { generateHTML } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import PostActions from "./postActions";
 
 const Post = ({ post, updatePost }) => {
   const { author } = post;
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const openPost = () => {
     navigate(`/post/${post.id}`, {
@@ -20,7 +21,14 @@ const Post = ({ post, updatePost }) => {
     <>
       {post && (
         <article onClick={openPost}>
-          <div className="flex">
+          <div
+            className="post"
+            style={{
+              borderBottomColor: location.pathname.includes("/post/")
+                ? "transparent"
+                : null,
+            }}
+          >
             <div>
               <Link
                 to={`/${author.username}`}
@@ -38,12 +46,13 @@ const Post = ({ post, updatePost }) => {
                 </div>
               </Link>
             </div>
-            <div>
+            <div className="flex-1">
               <div>
                 <Link
                   to={`/${author.username}`}
                   onClick={(e) => e.stopPropagation()}
                   state={{ userInfo: author }}
+                  className="fullname-link"
                 >
                   <span>
                     {`${author.profile.firstname} ${
@@ -56,15 +65,20 @@ const Post = ({ post, updatePost }) => {
                   onClick={(e) => e.stopPropagation()}
                   state={{ userInfo: author }}
                 >
-                  <span> @{author.username}</span>
+                  <span className="dim-text"> @{author.username}</span>
                 </Link>
 
-                <span> {format(post.createdAt, "MMM dd")}</span>
+                <span className="dim-text">
+                  {" "}
+                  {format(post.createdAt, "MMM dd")}
+                </span>
               </div>
               {post.replyTo && (
                 <div>Replying to @{post.replyTo.author.username}</div>
               )}
-              <div>{parse(generateHTML(post.body, [StarterKit]))}</div>
+              <div className="post__content">
+                {parse(generateHTML(post.body, [StarterKit]))}
+              </div>
               <div>
                 <PostActions post={post} updatePost={updatePost} />
               </div>

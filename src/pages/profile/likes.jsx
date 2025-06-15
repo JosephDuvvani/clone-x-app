@@ -56,7 +56,11 @@ const UserLikes = () => {
         </section>
       )}
       {loadingPosts && <div>Loading Liked Posts...</div>}
-      {likes && likes.length === 0 && <div>No Liked Posts</div>}
+      {likes && likes.length === 0 && (
+        <div className="posts-empty dim-text">
+          <div>No Liked Posts</div>
+        </div>
+      )}
     </div>
   );
 };

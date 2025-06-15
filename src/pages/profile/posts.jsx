@@ -49,7 +49,11 @@ const UserPosts = () => {
         </section>
       )}
       {loadingPosts && <div>Loading Posts...</div>}
-      {posts && posts.length === 0 && <div>No Posts</div>}
+      {posts && posts.length === 0 && (
+        <div className="posts-empty dim-text">
+          <div>No Posts</div>
+        </div>
+      )}
     </>
   );
 };

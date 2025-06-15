@@ -25,7 +25,11 @@ const Homepage = () => {
     <>
       {user && (
         <div>
-          <h3 aria-hidden>Following</h3>
+          <div className="main__outlet__header">
+            <div className="home-title">
+              <h3 aria-hidden>Following</h3>
+            </div>
+          </div>
           <CreatePost />
           <div>
             {posts && posts.length > 0 && (
@@ -37,7 +41,11 @@ const Homepage = () => {
                 ))}
               </section>
             )}
-            {posts && posts.length === 0 && <div>No Posts</div>}
+            {posts && posts.length === 0 && (
+              <div className="posts-empty">
+                <div>No Posts</div>
+              </div>
+            )}
           </div>
           {loadingPosts && <div>Loading Posts...</div>}
         </div>

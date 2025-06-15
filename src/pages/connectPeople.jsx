@@ -30,18 +30,26 @@ const ConnectPeople = () => {
 
   return (
     <div>
-      <div>
-        <div>
-          <button aria-label="back" onClick={() => navigate(-1)}>
-            <Icon path={mdiArrowLeft} size={1} />
-          </button>
-        </div>
-        <div>
-          <h2>Connect</h2>
+      <div className="main__content__header">
+        <div className="flex algn-c">
+          <div>
+            <button
+              aria-label="back"
+              className="strip-btn flex"
+              onClick={() => navigate(-1)}
+            >
+              <Icon path={mdiArrowLeft} size={0.85} />
+            </button>
+          </div>
+          <div style={{ marginLeft: "16px" }}>
+            <h2>Connect</h2>
+          </div>
         </div>
       </div>
       <section>
-        <h2>Suggestions</h2>
+        <div style={{ padding: "16px" }}>
+          <h2>Suggestions</h2>
+        </div>
         {loading && (
           <div className="loading">
             <Icon path={mdiLoading} size={1.5} />
@@ -50,10 +58,14 @@ const ConnectPeople = () => {
         {connects && connects.length > 0 && (
           <div>
             {connects.map((user) => (
-              <div key={user.id}>
+              <div
+                key={user.id}
+                className="connect-box__account"
+                onClick={() => navigate(`/${user.username}`)}
+              >
                 <div>
                   <Link to={`/${user.username}`}>
-                    <div className="picture">
+                    <div className="picture picture--small">
                       <img
                         src={
                           user.profile.pictureUrl ||
@@ -64,22 +76,26 @@ const ConnectPeople = () => {
                     </div>
                   </Link>
                 </div>
-                <div>
-                  <div>
-                    <div>
-                      <div>
-                        <Link to={`/${user.username}`}>
+                <div className="flex-1">
+                  <div className="flex">
+                    <div className="account-names flex-1">
+                      <Link
+                        to={`/${user.username}`}
+                        className="flex fullname-link"
+                      >
+                        <div className="flex account-name">
                           <span>
                             {`${user.profile.firstname} ${
                               user.profile.lastname || ""
                             }`.trim()}
                           </span>
-                        </Link>
-                      </div>
+                        </div>
+                      </Link>
+
                       <div>
-                        <Link to={`/${user.username}`}>
+                        <div className="account-name dim-text">
                           <span> @{user.username}</span>
-                        </Link>
+                        </div>
                       </div>
                     </div>
                     <div>

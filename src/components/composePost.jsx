@@ -20,21 +20,24 @@ const ComposePost = () => {
         <div className="modal__header">
           <div>
             <button
-              className="modal__close"
+              className="modal__close strip-btn flex"
               aria-label="Close modal"
               onClick={() => navigate(-1)}
             >
-              <Icon path={mdiClose} size={1} />
+              <Icon path={mdiClose} size={0.85} />
             </button>
           </div>
         </div>
         {post && (
           <div>
             <article>
-              <div>
+              <div
+                className="post"
+                style={{ borderBottomColor: "transparent" }}
+              >
                 <div>
                   <Link to={`/${author.username}`} state={{ userInfo: author }}>
-                    <div className="picture">
+                    <div className="flex picture picture--small">
                       <img
                         src={
                           author.profile.pictureUrl ||
@@ -45,7 +48,7 @@ const ComposePost = () => {
                     </div>
                   </Link>
                 </div>
-                <div>
+                <div className="flex-1">
                   <div>
                     <Link
                       to={`/${author.username}`}
@@ -70,7 +73,10 @@ const ComposePost = () => {
                 </div>
               </div>
             </article>
-            <div>Replying to @{post.author.username}</div>
+            <div style={{ marginLeft: "64px", marginBlock: "8px" }}>
+              <span className="dim-text">Replying to</span> @
+              {post.author.username}
+            </div>
           </div>
         )}
         <div>

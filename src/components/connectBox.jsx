@@ -3,7 +3,7 @@ import api from "../config/api.config";
 import UserContext from "../context/userContext";
 import Icon from "@mdi/react";
 import { mdiLoading } from "@mdi/js";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FollowButton from "./followButton";
 
 const ConnectBox = () => {
@@ -11,6 +11,7 @@ const ConnectBox = () => {
   const [loading, setLoading] = useState(false);
 
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -23,7 +24,7 @@ const ConnectBox = () => {
   }, []);
 
   return (
-    <div>
+    <div className="connect-box">
       {loading && (
         <div className="loading">
           <Icon path={mdiLoading} size={1.5} />
@@ -32,15 +33,20 @@ const ConnectBox = () => {
       {connects && (
         <>
           <div>
-            <h3>Who to follow</h3>
+            <h3 className="connect-box__heading">Who to follow</h3>
           </div>
           {connects.length > 0 && (
-            <div>
+            <ul>
               {connects.map((user) => (
-                <div key={user.id}>
+                <li
+                  key={user.id}
+                  className="connect-box__account"
+                  tabIndex={0}
+                  onClick={() => navigate(`/${user.username}`)}
+                >
                   <div>
-                    <Link to={`/${user.username}`}>
-                      <div className="picture">
+                    <div>
+                      <div className="picture picture--small">
                         <img
                           src={
                             user.profile.pictureUrl ||
@@ -49,34 +55,40 @@ const ConnectBox = () => {
                           alt=""
                         />
                       </div>
-                    </Link>
+                    </div>
                   </div>
-                  <div>
-                    <div>
-                      <div>
-                        <Link to={`/${user.username}`}>
+                  <div className="account-main">
+                    <div className="account-names">
+                      <Link
+                        to={`/${user.username}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex fullname-link"
+                      >
+                        <div className="flex account-name">
                           <span>
                             {`${user.profile.firstname} ${
                               user.profile.lastname || ""
                             }`.trim()}
                           </span>
-                        </Link>
-                      </div>
+                        </div>
+                      </Link>
+
                       <div>
-                        <Link to={`/${user.username}`}>
+                        <div className="account-name dim-text">
                           <span> @{user.username}</span>
-                        </Link>
+                        </div>
                       </div>
                     </div>
-                    <div>
+
+                    <div style={{ flexShrink: "0", marginRight: "2px" }}>
                       <FollowButton user={user} setConnects={setConnects} />
                     </div>
                   </div>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           )}
-          <div>
+          <div style={{ padding: "12px 16px", color: "rgb(29, 155, 240)" }}>
             <Link to={"connect_people"}>Show more</Link>
           </div>
         </>

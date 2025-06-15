@@ -1,7 +1,9 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import TextArea from "./textarea";
 import api from "../config/api.config";
 import UserContext from "../context/userContext";
+import Icon from "@mdi/react";
+import { mdiCameraPlusOutline } from "@mdi/js";
 
 const ProfileEditor = ({ saveEdit, savingEdit }) => {
   const { authUserInfo, setAuthUserInfo } = useContext(UserContext);
@@ -47,34 +49,65 @@ const ProfileEditor = ({ saveEdit, savingEdit }) => {
 
   return (
     <div className="profile-editor">
-      <div>
-        <label>
-          <div>Banner:</div>
-          <input
-            accept="image/jpeg, image/png, image/webp"
-            type="file"
-            name="bannerImage"
-            ref={bannerRef}
-          />
-        </label>
-        <div></div>
+      <div className="pos-rel">
+        <div>
+          <div>
+            <div style={{ width: "100%", paddingBottom: "33.333%" }}></div>
+          </div>
+          <div className="banner">
+            {profile.bannerUrl && <img src={profile.bannerUrl || ""} alt="" />}
+          </div>
+        </div>
+
+        <div className="pos-abs-c flex flex-col">
+          <div>
+            <label class="profile-editor__file">
+              <div className="flex">
+                <Icon path={mdiCameraPlusOutline} size={0.85} />
+              </div>
+              <input
+                className="input-file"
+                accept="image/jpeg, image/png, image/webp"
+                aria-label="Banner image"
+                type="file"
+                name="bannerImage"
+                ref={bannerRef}
+              />
+            </label>
+          </div>
+        </div>
       </div>
-      <div>
-        <label>
-          <div>Picture:</div>
-          <input
-            accept="image/jpeg, image/png, image/webp"
-            type="file"
-            name="profileImage"
-            ref={pictureRef}
+
+      <div className="picture profile__picture picture--edit pos-rel">
+        <div className="pos-rel">
+          <img
+            src={profile.pictureUrl || import.meta.env.VITE_DEFAULT_PICTURE250}
+            alt=""
           />
-        </label>
-        <div></div>
+        </div>
+
+        <div className="pos-abs-c">
+          <label class="profile-editor__file">
+            <div className="flex">
+              <Icon path={mdiCameraPlusOutline} size={0.85} />
+            </div>
+            <input
+              className="input-file"
+              accept="image/jpeg, image/png, image/webp"
+              aria-label="Profile picture"
+              type="file"
+              name="profileImage"
+              ref={pictureRef}
+            />
+          </label>
+        </div>
       </div>
-      <div>
-        <label>
-          <div>Firstname:</div>
+
+      <div className="flex">
+        <label className="input-wrapper">
+          <div className="placeholder">Firstname</div>
           <input
+            className="input"
             type="text"
             name="firstaname"
             value={firstname}
@@ -84,10 +117,11 @@ const ProfileEditor = ({ saveEdit, savingEdit }) => {
         </label>
         <div></div>
       </div>
-      <div>
-        <label>
-          <div>Lastname:</div>
+      <div className="flex">
+        <label className="input-wrapper">
+          <div className="placeholder">Lastname</div>
           <input
+            className="input"
             type="text"
             name="lastaname"
             value={lastname}
@@ -98,11 +132,9 @@ const ProfileEditor = ({ saveEdit, savingEdit }) => {
         <div></div>
       </div>
       <div>
-        <div>
-          <div>Bio:</div>
-          <div>
-            <TextArea handleChange={handleChange} content={bio} />
-          </div>
+        <div className="input-wrapper">
+          <div className="placeholder">Bio</div>
+          <TextArea handleChange={handleChange} content={bio} />
         </div>
         <div></div>
       </div>

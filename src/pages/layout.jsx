@@ -60,9 +60,18 @@ const Layout = () => {
             {user && <Header />}
             <main className="main">
               <MainContent>
-                <div className="main__content">
+                <div
+                  className={
+                    location.pathname === "/" ||
+                    backgroundLocation?.pathname === "/"
+                      ? "main__content main__content--auth"
+                      : "main__content"
+                  }
+                >
                   <PostProvider>
-                    <AppRoutes />
+                    <div className={user ? "main__outlet" : "flex flex-1"}>
+                      <AppRoutes />
+                    </div>
                   </PostProvider>
 
                   {user &&
@@ -71,7 +80,7 @@ const Layout = () => {
                       backgroundLocation?.pathname === "/connect_people"
                     ) && (
                       <aside className="aside">
-                        <div>
+                        <div className="aside__main">
                           <ConnectBox />
                         </div>
                       </aside>

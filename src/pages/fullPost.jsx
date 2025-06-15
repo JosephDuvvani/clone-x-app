@@ -89,18 +89,26 @@ const FullPost = () => {
     <div>
       {post && (
         <div>
-          <div>
-            <div className="flex">
-              <div>
-                <button aria-label="back" onClick={handleBack}>
-                  <Icon path={mdiArrowLeft} size={1} />
+          <div className="main__content__header">
+            <div className="flex algn-c flex-1">
+              <div className="flex">
+                <button
+                  className="strip-btn flex"
+                  aria-label="back"
+                  onClick={handleBack}
+                >
+                  <Icon path={mdiArrowLeft} size={0.85} />
                 </button>
               </div>
-              <div>
-                <h2>Post</h2>
+
+              <div className="flex-1" style={{ marginLeft: "16px" }}>
+                <h2 style={{ fontSize: "20px", lineHeight: "1" }}>Post</h2>
               </div>
               <div>
-                <button onClick={openModal}>
+                <button
+                  className="strip-btn hollow-btn flex"
+                  onClick={openModal}
+                >
                   <span>Reply</span>
                 </button>
               </div>

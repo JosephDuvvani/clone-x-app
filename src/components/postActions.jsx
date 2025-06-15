@@ -50,17 +50,21 @@ const PostActions = ({ post, updatePost }) => {
   };
 
   return (
-    <div className="flex">
+    <div className="post-actions">
       <div>
         <button
           aria-label={`${post._count.replies} replies. Reply`}
           onClick={openModal}
+          className="post-actions__btn dim-text reply-btn"
         >
           <div className="flex">
-            <div>
-              <Icon path={mdiCommentOutline} size={1} />
+            <div className="flex">
+              <Icon path={mdiCommentOutline} />
             </div>
-            <span>{post._count.replies}</span>
+            <div className="post-action__value">
+              {" "}
+              <span>{post._count.replies}</span>
+            </div>
           </div>
         </button>
       </div>
@@ -69,18 +73,18 @@ const PostActions = ({ post, updatePost }) => {
           aria-label={`${post._count.likes} likes. Like`}
           onClick={post.liked ? handleUnlike : handleLike}
           style={{
-            color: post.liked ? "lightgreen" : "inherit",
+            color: post.liked ? "rgb(249, 24, 128)" : null,
           }}
+          className="post-actions__btn dim-text like-btn"
         >
           <div className="flex">
-            <div className={loadingLike ? "loading" : null}>
-              <Icon
-                path={loadingLike ? mdiLoading : mdiHeartOutline}
-                size={1}
-              />
+            <div className={loadingLike ? "loading flex" : "flex"}>
+              <Icon path={loadingLike ? mdiLoading : mdiHeartOutline} />
             </div>
 
-            <span>{post._count.likes}</span>
+            <div className="post-action__value">
+              <span>{post._count.likes}</span>
+            </div>
           </div>
         </button>
       </div>

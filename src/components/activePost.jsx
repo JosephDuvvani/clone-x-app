@@ -9,9 +9,9 @@ const ActivePost = ({ post, updatePost }) => {
   const author = post.author;
 
   return (
-    <article>
-      <div>
-        <div>
+    <article className="post" style={{ cursor: "auto" }}>
+      <div className="flex-1">
+        <div className="flex">
           <div>
             <Link to={`/${author.username}`} state={{ userInfo: author }}>
               <div className="flex picture picture--small">
@@ -25,12 +25,13 @@ const ActivePost = ({ post, updatePost }) => {
               </div>
             </Link>
           </div>
-          <div>
+          <div className="account-names">
             <div>
               <Link
                 to={`/${author.username}`}
                 onClick={(e) => e.stopPropagation()}
                 state={{ userInfo: author }}
+                className="fullname-link"
               >
                 <span>
                   {`${author.profile.firstname} ${
@@ -39,22 +40,27 @@ const ActivePost = ({ post, updatePost }) => {
                 </span>
               </Link>
             </div>
-            <div>
+            <div className="flex">
               <Link
                 to={`/${author.username}`}
                 onClick={(e) => e.stopPropagation()}
                 state={{ userInfo: author }}
               >
-                <span> @{author.username}</span>
+                <div className="dim-text">
+                  <span> @{author.username}</span>
+                </div>
               </Link>
             </div>
           </div>
         </div>
-        <div>{parse(generateHTML(post.body, [StarterKit]))}</div>
-        <div>
+        <div className="post__content" style={{ marginTop: "8px" }}>
+          {parse(generateHTML(post.body, [StarterKit]))}
+        </div>
+        <div style={{ marginBottom: "12px" }}>
           <span> {format(post.createdAt, "h:mm a MMM dd, yyyy")}</span>
         </div>
-        <div>
+        <div className="line-1"></div>
+        <div style={{ marginTop: "8px" }}>
           <PostActions post={post} updatePost={updatePost} />
         </div>
       </div>

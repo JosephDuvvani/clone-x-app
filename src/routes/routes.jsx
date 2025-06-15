@@ -19,10 +19,8 @@ const AppRoutes = () => {
   return (
     <>
       <Routes location={backgroundLocation || location}>
-        <Route path="/" element={<Auth />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-        </Route>
+        <Route path="/" element={<Auth />} />
+        <Route path="/failure" element={<div>Failed</div>} />
         <Route path="/home" element={<Homepage />} />
         <Route path="/:username" element={<Profile />}>
           <Route index element={<UserPosts />} />
@@ -32,6 +30,8 @@ const AppRoutes = () => {
         <Route path="/post/:postId" element={<FullPost />} />
       </Routes>
 
+      {backgroundLocation && location.pathname === "/signup" && <Signup />}
+      {backgroundLocation && location.pathname === "/login" && <Login />}
       {backgroundLocation && location.pathname === "/settings/profile" && (
         <EditProfile />
       )}

@@ -3,7 +3,7 @@ import api from "../config/api.config";
 import TextArea from "./textarea";
 import { isEmpty } from "../lib/textAreaUtils";
 import UserContext from "../context/userContext";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { usePost } from "../context/postContext";
 import ProfileContext from "../context/profileContext";
 
@@ -123,21 +123,37 @@ const CreatePost = () => {
   };
 
   return (
-    <div>
+    <div className="post-creator">
       <div>
-        <div className="picture">
-          <img
-            src={
-              user.profile.pictureUrl || import.meta.env.VITE_DEFAULT_PICTURE68
-            }
-            alt=""
-          />
-        </div>
-        <TextArea handleChange={handleChange} content={body} />
+        <Link to={`/${user.username}`}>
+          <div className="picture picture--small">
+            <img
+              src={
+                user.profile.pictureUrl ||
+                import.meta.env.VITE_DEFAULT_PICTURE68
+              }
+              alt=""
+            />
+          </div>
+        </Link>
       </div>
-      <button onClick={handlePost} disabled={isEmpty(body)}>
-        {post ? "Reply" : "Post"}
-      </button>
+      <div className="post-creator__main">
+        <div className="pos-rel">
+          {isEmpty(body) && (
+            <div className="placeholder">
+              <span>{"What's happening?"}</span>
+            </div>
+          )}
+          <TextArea handleChange={handleChange} content={body} />
+        </div>
+        <button
+          className="btn btn--post"
+          onClick={handlePost}
+          disabled={isEmpty(body)}
+        >
+          {post ? "Reply" : "Post"}
+        </button>
+      </div>
     </div>
   );
 };

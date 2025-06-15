@@ -14,18 +14,24 @@ const EditProfile = () => {
       <div className="modal__content__edit-profile">
         <div className="modal__header">
           <button
-            className="modal__close"
+            className="modal__close strip-btn flex algn-c"
             aria-label="Close modal"
             onClick={() => navigate(-1)}
           >
-            <Icon path={mdiClose} size={1} />
+            <Icon path={mdiClose} size={0.85} />
           </button>
 
           <div className="modal__title">
             <h2>Edit profile</h2>
           </div>
 
-          <button onClick={() => setSaveEdit(true)}>Save</button>
+          <button
+            className="btn"
+            style={{ fontWeight: "400", fontSize: "15px", padding: "6px 16px" }}
+            onClick={() => setSaveEdit(true)}
+          >
+            Save
+          </button>
         </div>
         <ProfileEditor saveEdit={saveEdit} savingEdit={setSaveEdit} />
       </div>
