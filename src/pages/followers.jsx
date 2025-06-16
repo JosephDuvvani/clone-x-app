@@ -14,12 +14,11 @@ const Followers = () => {
 
   const [user, setUser] = useState(location.state?.userInfo);
   const [followers, setFollowers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!authUser) navigate("/", { replace: true });
     else {
-      setLoading(true);
       if (!user && username !== authUser.username) {
         api
           .get(`users/${username}`)
@@ -34,7 +33,7 @@ const Followers = () => {
         .catch((error) => console.error(error.response?.data.message || error))
         .finally(() => setLoading(false));
     }
-  }, []);
+  }, [authUser?.id]);
 
   return (
     <div>
@@ -66,22 +65,21 @@ const Followers = () => {
           <div className="flex jst-c" style={{ padding: "16px" }}>
             <h2>Followers</h2>
           </div>
-          {loading && (
-            <div className="loading">
+          {loading ? (
+            <div className="loading content-empty">
               <div className="loading__spinner">
-                <Icon path={mdiLoading} size={1.5} />
+                <Icon path={mdiLoading} />
               </div>
             </div>
-          )}
-          {followers.length > 0 ? (
+          ) : followers && followers.length > 0 ? (
             <div>
               <Users connects={followers} setConnects={setFollowers} />
             </div>
-          ) : (
+          ) : followers && followers.length === 0 ? (
             <div className="content-empty">
               <div>No followers</div>
             </div>
-          )}
+          ) : null}
         </section>
       </div>
     </div>
