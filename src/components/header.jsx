@@ -1,4 +1,9 @@
-import { mdiAccountOutline, mdiFeather, mdiHomeVariant } from "@mdi/js";
+import {
+  mdiAccountOutline,
+  mdiFeather,
+  mdiHomeVariant,
+  mdiLoading,
+} from "@mdi/js";
 import Icon from "@mdi/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AccountButton from "./accountButton";
@@ -8,6 +13,7 @@ import api from "../config/api.config";
 
 const Header = () => {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { user, setUser, setAuthUserInfo } = useContext(UserContext);
   const navigate = useNavigate();
@@ -18,13 +24,15 @@ const Header = () => {
   };
 
   const handleLogOut = (e) => {
+    setLoading(true);
     e.preventDefault();
     api
       .get("/auth/logout")
       .then((res) => {
         setUser(null), setAuthUserInfo(null);
       })
-      .catch((error) => console.error(error.message));
+      .catch((error) => console.error(error.message))
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -96,13 +104,21 @@ const Header = () => {
           ></div>
 
           <div className="account-menu" onClick={(e) => e.stopPropagation()}>
-            <Link
-              to={"/logout"}
-              className="account-menu__link"
-              onClick={handleLogOut}
-            >
-              Log Out @{user.username}
-            </Link>
+            {loading ? (
+              <div className="loading" style={{ paddingBlock: "6px" }}>
+                <div className="loading__spinner">
+                  <Icon path={mdiLoading} />
+                </div>
+              </div>
+            ) : (
+              <Link
+                to={"/logout"}
+                className="account-menu__link ellipsis"
+                onClick={handleLogOut}
+              >
+                Log Out @{user.username}
+              </Link>
+            )}
           </div>
         </>
       )}

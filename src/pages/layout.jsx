@@ -90,7 +90,23 @@ const Layout = () => {
             </main>
           </>
         )}
-        {loading && <div>Loading...</div>}
+        {loading && (
+          <div className="modal" style={{ backgroundColor: "var(--bg)" }}>
+            <div className="modal__content" style={{ borderRadius: "0" }}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 195 171"
+                fill="none"
+                style={{ width: "4rem", height: "4rem" }}
+              >
+                <path
+                  d="M108.979 143.657L169.958 0H194.958L122.673 170.293H72.2852L0 0H48L108.979 143.657ZM82.6094 154.076H96.6094L38 16H24L82.6094 154.076Z"
+                  fill="white"
+                />
+              </svg>
+            </div>
+          </div>
+        )}
       </UserProvider>
     </div>
   );

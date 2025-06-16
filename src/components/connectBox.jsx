@@ -25,74 +25,74 @@ const ConnectBox = () => {
 
   return (
     <div className="connect-box">
-      {loading && (
-        <div className="loading">
-          <Icon path={mdiLoading} size={1.5} />
-        </div>
-      )}
-      {connects && (
-        <>
-          <div>
-            <h3 className="connect-box__heading">Who to follow</h3>
+      <div>
+        <h3 className="connect-box__heading">Who to follow</h3>
+      </div>
+      {loading ? (
+        <div className="loading posts-empty">
+          <div className="loading__spinner">
+            <Icon path={mdiLoading} />
           </div>
-          {connects.length > 0 && (
-            <ul>
-              {connects.map((user) => (
-                <li
-                  key={user.id}
-                  className="connect-box__account"
-                  tabIndex={0}
-                  onClick={() => navigate(`/${user.username}`)}
-                >
+        </div>
+      ) : connects && connects.length > 0 ? (
+        <>
+          <ul>
+            {connects.map((user) => (
+              <li
+                key={user.id}
+                className="connect-box__account"
+                tabIndex={0}
+                onClick={() => navigate(`/${user.username}`)}
+              >
+                <div>
                   <div>
+                    <div className="picture picture--small">
+                      <img
+                        src={
+                          user.profile.pictureUrl ||
+                          import.meta.env.VITE_DEFAULT_PICTURE68
+                        }
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="account-main">
+                  <div className="account-names">
+                    <Link
+                      to={`/${user.username}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex fullname-link"
+                    >
+                      <div className="flex account-name">
+                        <span>
+                          {`${user.profile.firstname} ${
+                            user.profile.lastname || ""
+                          }`.trim()}
+                        </span>
+                      </div>
+                    </Link>
+
                     <div>
-                      <div className="picture picture--small">
-                        <img
-                          src={
-                            user.profile.pictureUrl ||
-                            import.meta.env.VITE_DEFAULT_PICTURE68
-                          }
-                          alt=""
-                        />
+                      <div className="account-name dim-text">
+                        <span> @{user.username}</span>
                       </div>
                     </div>
                   </div>
-                  <div className="account-main">
-                    <div className="account-names">
-                      <Link
-                        to={`/${user.username}`}
-                        onClick={(e) => e.stopPropagation()}
-                        className="flex fullname-link"
-                      >
-                        <div className="flex account-name">
-                          <span>
-                            {`${user.profile.firstname} ${
-                              user.profile.lastname || ""
-                            }`.trim()}
-                          </span>
-                        </div>
-                      </Link>
 
-                      <div>
-                        <div className="account-name dim-text">
-                          <span> @{user.username}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div style={{ flexShrink: "0", marginRight: "2px" }}>
-                      <FollowButton user={user} setConnects={setConnects} />
-                    </div>
+                  <div style={{ flexShrink: "0", marginRight: "2px" }}>
+                    <FollowButton user={user} setConnects={setConnects} />
                   </div>
-                </li>
-              ))}
-            </ul>
-          )}
+                </div>
+              </li>
+            ))}
+          </ul>
+
           <div style={{ padding: "12px 16px", color: "rgb(29, 155, 240)" }}>
             <Link to={"connect_people"}>Show more</Link>
           </div>
         </>
-      )}
+      ) : null}
     </div>
   );
 };

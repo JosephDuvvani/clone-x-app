@@ -4,16 +4,17 @@ import Post from "../../components/post";
 import ProfileContext from "../../context/profileContext";
 import api from "../../config/api.config";
 import UserContext from "../../context/userContext";
+import Icon from "@mdi/react";
+import { mdiLoading } from "@mdi/js";
 
 const UserPosts = () => {
   const { posts, setPosts, userInfo } = useContext(ProfileContext);
   const { followingPosts, setFollowingPosts } = useContext(UserContext);
-  const [loadingPosts, setLoadingPosts] = useState(false);
+  const [loadingPosts, setLoadingPosts] = useState(true);
 
   const { username } = useParams();
 
   useEffect(() => {
-    setLoadingPosts(true);
     api
       .get(`users/${username}/posts`)
       .then((res) => setPosts(res.data.posts))
@@ -39,7 +40,13 @@ const UserPosts = () => {
 
   return (
     <>
-      {posts && posts.length > 0 && (
+      {loadingPosts ? (
+        <div className="loading posts-empty">
+          <div className="loading__spinner">
+            <Icon path={mdiLoading} />
+          </div>
+        </div>
+      ) : posts && posts.length > 0 ? (
         <section>
           {posts.map((post) => (
             <div key={post.id}>
@@ -47,13 +54,11 @@ const UserPosts = () => {
             </div>
           ))}
         </section>
-      )}
-      {loadingPosts && <div>Loading Posts...</div>}
-      {posts && posts.length === 0 && (
+      ) : posts && posts.length === 0 ? (
         <div className="posts-empty dim-text">
           <div>No Posts</div>
         </div>
-      )}
+      ) : null}
     </>
   );
 };

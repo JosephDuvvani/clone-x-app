@@ -44,18 +44,23 @@ const ConnectPeople = () => {
         </div>
       </div>
       <section>
-        <div style={{ padding: "16px" }}>
-          <h2>Suggestions</h2>
-        </div>
-        {loading && (
-          <div className="loading">
-            <Icon path={mdiLoading} size={1.5} />
+        {loading ? (
+          <div className="loading posts-empty">
+            <div className="loading__spinner">
+              <Icon path={mdiLoading} />
+            </div>
           </div>
-        )}
-        {connects && connects.length > 0 && (
-          <div>
-            <Users connects={connects} setConnects={setConnects} />
-          </div>
+        ) : (
+          <>
+            <div style={{ padding: "16px" }}>
+              <h2>Suggestions</h2>
+            </div>
+            {connects && connects.length > 0 ? (
+              <div>
+                <Users connects={connects} setConnects={setConnects} />
+              </div>
+            ) : null}
+          </>
         )}
       </section>
     </div>

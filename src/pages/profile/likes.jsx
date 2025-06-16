@@ -4,6 +4,8 @@ import Post from "../../components/post";
 import ProfileContext from "../../context/profileContext";
 import api from "../../config/api.config";
 import UserContext from "../../context/userContext";
+import Icon from "@mdi/react";
+import { mdiLoading } from "@mdi/js";
 
 const UserLikes = () => {
   const { likes, setLikes } = useContext(ProfileContext);
@@ -46,7 +48,13 @@ const UserLikes = () => {
 
   return (
     <div>
-      {likes && likes.length > 0 && (
+      {loadingPosts ? (
+        <div className="loading posts-empty">
+          <div className="loading__spinner">
+            <Icon path={mdiLoading} />
+          </div>
+        </div>
+      ) : likes && likes.length > 0 ? (
         <section>
           {likes.map((like) => (
             <div key={like.post.id}>
@@ -54,13 +62,11 @@ const UserLikes = () => {
             </div>
           ))}
         </section>
-      )}
-      {loadingPosts && <div>Loading Liked Posts...</div>}
-      {likes && likes.length === 0 && (
+      ) : likes && likes.length === 0 ? (
         <div className="posts-empty dim-text">
           <div>No Liked Posts</div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };
